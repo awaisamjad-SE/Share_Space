@@ -1,0 +1,73 @@
+{% extends 'layout.html' %}
+
+{% block title %}Page Not Found - SocialShare{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-900 flex items-center justify-center px-4">
+  <div class="max-w-lg w-full text-center">
+    <!-- 404 Error Icon -->
+    <div class="mb-8">
+      <div class="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-red-600 to-pink-600 rounded-full mb-6">
+        <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.268 18.5c-.77.833.192 2.5 1.732 2.5z"></path>
+        </svg>
+      </div>
+      <h1 class="text-6xl font-bold text-white mb-2">404</h1>
+      <h2 class="text-2xl font-semibold text-gray-300 mb-4">Page Not Found</h2>
+    </div>
+
+    <!-- Error Message -->
+    <div class="bg-gray-800 rounded-xl p-6 mb-8 border border-gray-700">
+      <h3 class="text-lg font-medium text-white mb-3">🚫 Access Restricted</h3>
+      <p class="text-gray-400 mb-4">
+        The content you're looking for either doesn't exist or you don't have permission to view it.
+      </p>
+      
+      <div class="bg-gray-700 rounded-lg p-4 text-left">
+        <h4 class="text-sm font-medium text-gray-300 mb-2">This could happen if:</h4>
+        <ul class="text-xs text-gray-400 space-y-1">
+          <li>• The post has been deleted or moved</li>
+          <li>• The content is private and you're not the owner</li>
+          <li>• You're trying to access protected images without permission</li>
+          <li>• The URL is incorrect or outdated</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="space-y-4">
+      <a href="{% url 'tweet:tweet_list' %}" 
+         class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 inline-block">
+        🏠 Back to Home
+      </a>
+      
+      {% if not user.is_authenticated %}
+      <div class="flex space-x-3">
+        <a href="{% url 'tweet:login' %}" 
+           class="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200">
+          🔑 Login
+        </a>
+        <a href="{% url 'tweet:register' %}" 
+           class="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200">
+          📝 Register
+        </a>
+      </div>
+      {% else %}
+      <a href="{% url 'tweet:tweet_create' %}" 
+         class="w-full bg-gray-700 hover:bg-gray-600 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 inline-block">
+        ✨ Create New Post
+      </a>
+      {% endif %}
+    </div>
+
+    <!-- Help Section -->
+    <div class="mt-8 p-4 bg-gray-800 rounded-lg border border-gray-700">
+      <h4 class="text-sm font-medium text-gray-300 mb-2">💡 Need Help?</h4>
+      <p class="text-xs text-gray-400">
+        If you believe this is an error, try refreshing the page or 
+        <span class="text-blue-400">clearing your browser cache</span>.
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,184 @@
+{% extends "layout.html" %}
+
+{% block title %}
+ShareSpace - Home
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-900">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+    <!-- Header Section -->
+    <div class="text-center mb-8">
+      <h1 class="text-3xl sm:text-4xl font-bold text-white mb-4">Latest Posts</h1>
+      <p class="text-gray-400 mb-6 text-sm sm:text-base">Share your moments with the world</p>
+      <a href="{% url 'tweet:tweet_create' %}" 
+         class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 shadow-lg text-sm sm:text-base">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+        </svg>
+        Create New Post
+      </a>
+    </div>
+
+    <!-- Posts Grid - Improved Mobile Responsive -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6">
+      {% for tweet in tweets %}
+      <a href="{% url 'tweet:tweet_detail' tweet.id %}" class="block group">
+        <div class="bg-gray-800 rounded-lg sm:rounded-xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] border border-gray-700 group-hover:border-blue-500">
+          <!-- Image Section - Responsive Height -->
+          <div class="h-40 sm:h-48 bg-gray-700 relative overflow-hidden">
+            {% if tweet.photo %}
+              {% if tweet.is_private %}
+                <!-- Private tweet - use protected image serving -->
+                <img src="{% url 'tweet:protected_image' filename=tweet.photo.name %}" 
+                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" 
+                     alt="{{ tweet.title }}" />
+              {% else %}
+                <!-- Public tweet - show image directly -->
+                <img src="{{ tweet.photo.url }}" 
+                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" 
+                     alt="{{ tweet.title }}" />
+              {% endif %}
+              <!-- Privacy badge on image -->
+              <div class="absolute top-2 right-2">
+                {% if tweet.is_private %}
+                  <span class="bg-yellow-600 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center">
+                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    Private
+                  </span>
+                {% else %}
+                  <span class="bg-green-600 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center">
+                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 3.314-2.686 6-6 6s-6-2.686-6-6a5.98 5.98 0 01.332-2.027z" clip-rule="evenodd"></path>
+                    </svg>
+                    Public
+                  </span>
+                {% endif %}
+              </div>
+            {% else %}
+              <!-- No image placeholder -->
+              <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-700 to-gray-800 group-hover:from-gray-600 group-hover:to-gray-700 transition-colors duration-300">
+                <div class="text-center">
+                  <svg class="w-12 h-12 text-gray-500 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                  </svg>
+                  <span class="text-gray-500 text-sm">Click to read</span>
+                </div>
+              </div>
+              <!-- Privacy badge for text-only posts -->
+              <div class="absolute top-2 right-2">
+                {% if tweet.is_private %}
+                  <span class="bg-yellow-600 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center">
+                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    Private
+                  </span>
+                {% else %}
+                  <span class="bg-green-600 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center">
+                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 3.314-2.686 6-6 6s-6-2.686-6-6a5.98 5.98 0 01.332-2.027z" clip-rule="evenodd"></path>
+                    </svg>
+                    Public
+                  </span>
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+          
+          <!-- Content Section - Responsive Height -->
+          <div class="p-3 sm:p-4 min-h-[120px] sm:h-32 flex flex-col justify-between">
+            <div class="flex-1">
+              <h3 class="text-white font-bold text-sm sm:text-base mb-2 line-clamp-2 leading-tight group-hover:text-blue-400 transition-colors duration-200">
+                {{ tweet.title|truncatewords:5 }}
+              </h3>
+              <p class="text-gray-400 text-xs sm:text-sm line-clamp-2">
+                {{ tweet.text|truncatewords:10 }}
+              </p>
+            </div>
+            
+            <!-- Author and date -->
+            <div class="flex items-center justify-between mt-3 pt-2 border-t border-gray-700">
+              <div class="flex items-center">
+                <div class="w-5 h-5 sm:w-6 sm:h-6 bg-blue-600 rounded-full flex items-center justify-center">
+                  <span class="text-white text-xs font-bold">{{ tweet.user.username|first|upper }}</span>
+                </div>
+                <div class="ml-2">
+                  <p class="text-white text-xs sm:text-sm font-medium">{{ tweet.user.username|truncatewords:1 }}</p>
+                  <p class="text-gray-500 text-xs">{{ tweet.created_at|date:"M d" }}</p>
+                </div>
+              </div>
+              
+              <!-- Read More Indicator -->
+              <div class="text-blue-400 group-hover:text-blue-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Action Buttons - Only for own tweets (outside clickable area) -->
+      {% if tweet.user == user %}
+      <div class="mt-2 sm:mt-3 px-1">
+        <!-- Mobile: Always visible, Desktop: Hover visible -->
+        <div class="sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
+          <div class="flex space-x-2">
+            <a href="{% url 'tweet:tweet_edit' tweet.id %}" 
+               class="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-center py-2 px-2 sm:px-3 rounded-md text-xs font-medium transition-all duration-200 transform hover:scale-105 shadow-lg"
+               onclick="event.preventDefault(); event.stopPropagation(); window.location.href=this.href;">
+              <svg class="w-3 h-3 inline-block mr-1" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
+              </svg>
+              <span class="hidden sm:inline">Edit</span>
+              <span class="sm:hidden">✏️</span>
+            </a>
+            <a href="{% url 'tweet:tweet_delete' tweet.id %}" 
+               class="flex-1 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white text-center py-2 px-2 sm:px-3 rounded-md text-xs font-medium transition-all duration-200 transform hover:scale-105 shadow-lg"
+               onclick="event.preventDefault(); event.stopPropagation(); window.location.href=this.href;">
+              <svg class="w-3 h-3 inline-block mr-1" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" clip-rule="evenodd"></path>
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 012 0v4a1 1 0 11-2 0V7zM12 7a1 1 0 112 0v4a1 1 0 11-2 0V7z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="hidden sm:inline">Delete</span>
+              <span class="sm:hidden">🗑️</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <!-- Empty State -->
+  {% if not tweets %}
+  <div class="text-center py-8 sm:py-12">
+    <svg class="w-12 h-12 sm:w-16 sm:h-16 text-gray-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+    </svg>
+    <h3 class="text-lg sm:text-xl font-semibold text-white mb-2">No posts yet</h3>
+    <p class="text-gray-400 mb-6 text-sm sm:text-base px-4">Be the first to share something amazing!</p>
+    <a href="{% url 'tweet:tweet_create' %}" 
+       class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm sm:text-base">
+      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+      </svg>
+      Create Your First Post
+    </a>
+  </div>
+  {% endif %}
+</div>
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
+{% endblock %}

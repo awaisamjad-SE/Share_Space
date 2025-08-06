@@ -1,0 +1,122 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Login - ShareSpace
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center px-4">
+  <div class="max-w-md w-full">
+    <div class="bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 overflow-hidden">
+      <!-- Header -->
+      <div class="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-8">
+        <div class="text-center">
+          <div class="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            </svg>
+          </div>
+          <h1 class="text-3xl font-bold text-white">Welcome Back!</h1>
+          <p class="text-blue-100 mt-2">Sign in to your ShareSpace account</p>
+        </div>
+      </div>
+      
+      <!-- Form -->
+      <div class="p-6">
+        <form method="post" class="space-y-6">
+          {% csrf_token %}
+          
+          {% if form.non_field_errors %}
+            <div class="bg-red-900 border border-red-700 rounded-lg p-4">
+              <div class="flex items-start">
+                <svg class="w-5 h-5 text-red-400 mt-0.5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                </svg>
+                <div class="text-red-300 text-sm">
+                  {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          {% endif %}
+
+          <div class="space-y-4">
+            <!-- Username Field -->
+            <div>
+              <label for="{{ form.username.id_for_label }}" class="block text-sm font-semibold text-gray-300 mb-2">
+                👤 Username
+              </label>
+              <input 
+                type="text"
+                name="username"
+                id="{{ form.username.id_for_label }}"
+                class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                placeholder="Enter your username"
+                value="{{ form.username.value|default_if_none:'' }}"
+                required>
+              {% if form.username.errors %}
+                <div class="text-red-400 text-sm mt-1">
+                  {% for error in form.username.errors %}
+                    <p>{{ error }}</p>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Password Field -->
+            <div>
+              <label for="{{ form.password.id_for_label }}" class="block text-sm font-semibold text-gray-300 mb-2">
+                🔒 Password
+              </label>
+              <input 
+                type="password"
+                name="password"
+                id="{{ form.password.id_for_label }}"
+                class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                placeholder="Enter your password"
+                required>
+              {% if form.password.errors %}
+                <div class="text-red-400 text-sm mt-1">
+                  {% for error in form.password.errors %}
+                    <p>{{ error }}</p>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Login Button -->
+          <button 
+            type="submit" 
+            class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800">
+            🚀 Sign In
+          </button>
+
+          <!-- Divider -->
+          <div class="relative my-6">
+            <div class="absolute inset-0 flex items-center">
+              <div class="w-full border-t border-gray-600"></div>
+            </div>
+            <div class="relative flex justify-center text-sm">
+              <span class="px-2 bg-gray-800 text-gray-400">New to ShareSpace?</span>
+            </div>
+          </div>
+
+          <!-- Register Link -->
+          <div class="text-center">
+            <a 
+              href="{% url 'tweet:register' %}" 
+              class="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium transition-colors duration-200">
+              ✨ Create a new account
+              <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+              </svg>
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,137 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Register - ShareSpace
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center px-4">
+  <div class="max-w-md w-full">
+    <div class="bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 overflow-hidden">
+      <!-- Header -->
+      <div class="bg-gradient-to-r from-green-600 to-blue-600 px-6 py-8">
+        <div class="text-center">
+          <div class="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+            </svg>
+          </div>
+          <h1 class="text-3xl font-bold text-white">Join ShareSpace!</h1>
+          <p class="text-green-100 mt-2">Create your account to start sharing</p>
+        </div>
+      </div>
+      
+      <!-- Form -->
+      <div class="p-6">
+        <form method="post" class="space-y-6">
+          {% csrf_token %}
+          
+          <div class="space-y-4">
+            <!-- Username Field -->
+            <div>
+              <label for="{{ form.username.id_for_label }}" class="block text-sm font-semibold text-gray-300 mb-2">
+                👤 Username
+              </label>
+              <input 
+                type="text"
+                name="username"
+                id="{{ form.username.id_for_label }}"
+                class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                placeholder="Choose a unique username"
+                value="{{ form.username.value|default_if_none:'' }}"
+                required>
+              {% if form.username.errors %}
+                <div class="text-red-400 text-sm mt-1">
+                  {% for error in form.username.errors %}
+                    <p>{{ error }}</p>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Email Field -->
+            <div>
+              <label for="{{ form.email.id_for_label }}" class="block text-sm font-semibold text-gray-300 mb-2">
+                📧 Email Address
+              </label>
+              <input 
+                type="email"
+                name="email"
+                id="{{ form.email.id_for_label }}"
+                class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                placeholder="Enter your email address"
+                value="{{ form.email.value|default_if_none:'' }}"
+                required>
+              {% if form.email.errors %}
+                <div class="text-red-400 text-sm mt-1">
+                  {% for error in form.email.errors %}
+                    <p>{{ error }}</p>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Password Field -->
+            <div>
+              <label for="{{ form.password.id_for_label }}" class="block text-sm font-semibold text-gray-300 mb-2">
+                🔒 Password
+              </label>
+              <input 
+                type="password"
+                name="password"
+                id="{{ form.password.id_for_label }}"
+                class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                placeholder="Create a secure password"
+                required>
+              {% if form.password.errors %}
+                <div class="text-red-400 text-sm mt-1">
+                  {% for error in form.password.errors %}
+                    <p>{{ error }}</p>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Terms Notice -->
+          <div class="bg-gray-700 rounded-lg p-4">
+            <p class="text-xs text-gray-400">
+              By creating an account, you agree to our terms of service and privacy policy. 
+              Your data is secure and we respect your privacy.
+            </p>
+          </div>
+
+          <!-- Register Button -->
+          <button 
+            type="submit" 
+            class="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-800">
+            🎉 Create Account
+          </button>
+
+          <!-- Divider -->
+          <div class="relative my-6">
+            <div class="absolute inset-0 flex items-center">
+              <div class="w-full border-t border-gray-600"></div>
+            </div>
+            <div class="relative flex justify-center text-sm">
+              <span class="px-2 bg-gray-800 text-gray-400">Already have an account?</span>
+            </div>
+          </div>
+
+          <!-- Login Link -->
+          <div class="text-center">
+            <a 
+              href="{% url 'tweet:login' %}" 
+              class="inline-flex items-center text-green-400 hover:text-green-300 font-medium transition-colors duration-200">
+              🔑 Sign in to your account
+              <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+              </svg>
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
